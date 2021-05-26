@@ -1,8 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState,useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+// In App.js in a new project
 
-export default function App() {
+import { StatusBar } from 'expo-status-bar';
+import  React, { useState,useEffect } from 'react';
+import { View, Text,  Button, StyleSheet, TextInput } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const HomeScreen=({navigation})=> {
+
   const [originalPrice, setOriginalPrice] = useState('');
   const [discountPercentage, setDiscountPercentage] = useState('');
   const [finalPrice, setFinalPrice] = useState('');
@@ -16,13 +21,13 @@ export default function App() {
         setSave(x)
       }
       else {
-        setFinalPrice('')
-        setSave('')
+        setFinalPrice('0.00 ')
+        setSave('0.00')
       }
     }
     else {
-      setFinalPrice('')
-      setSave('')
+      setFinalPrice('0.00')
+      setSave('0.00')
     }
   }
   useEffect(() => {
@@ -31,6 +36,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <view>
+      <button
+      onClick={()=>navigation.navigate('History')}
+      >Go to History Screen</button>
+      </view>
+      
       <view >
         <Text >Original Price</Text>
         <TextInput style={styles.inputText}
@@ -64,9 +75,39 @@ export default function App() {
         <text>You Save</text>
         <text>{save}</text>
       </view>
-
-      <button title="Chnage Name" onClick={calculateDiscount.bind(this, "Arslan")} >Press Me!!</button>
     </View>
+  );
+
+}
+
+const History=({navigation})=> {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>History Screen</Text>
+      <button
+      onClick={()=>navigation.navigate("Home")}
+      ></button>
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="History" component={History} 
+          options={{
+            headerTintColor: 'white',
+            headerStyle: {
+              backgroundColor: 'blue'
+            }
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -82,3 +123,5 @@ const styles = StyleSheet.create({
 
   }
 });
+
+export default App;
